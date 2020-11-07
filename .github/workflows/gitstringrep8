@@ -1,0 +1,378 @@
+#pragma warning (disable: 4996)
+#include <iostream>
+#include <cmath>
+#include <cstring>
+#include <iomanip>
+#include <cctype>
+#include <windows.h>
+using namespace std;
+
+int poisk(const char* str, char simvol) // 1 задание
+{
+    if (strlen(str) != 0)
+    {
+        int n = strlen(str);
+        int count = 0;
+        for (int i = 0; i < n; i++)
+        {
+            if (str[i] == simvol) count++;
+        }
+        return count;
+    }
+    else return -1;
+}
+
+void exchange(char* str, char simvol) // 2 задание
+{
+    const int length = 81;
+    char str_copy[length];
+    strcpy(str_copy, str);
+    int n = strlen(str_copy);
+    if (strlen(str_copy) != 0)
+    {
+        int n = strlen(str);
+        for (int i = 0; i < n; i++)
+        {
+            if (isdigit(str_copy[i])) str_copy[i] = simvol;
+        }
+        cout << str_copy << endl;
+        cout << endl;
+    }
+    else cout << "ERROR";
+}
+
+char* rost(char* str)
+{
+    if (str != NULL)
+    {
+        int n = strlen(str);
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n - i - 1; j++)
+                if (str[j + 1] < str[j])
+                {
+                    int temp = str[j];
+                    str[j] = str[j + 1];
+                    str[j + 1] = temp;
+                }
+        return str;
+    }
+}
+
+char* vniz(char* str)
+{
+    if (str != NULL)
+    {
+        int n = strlen(str);
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < n - i - 1; j++)
+                if (str[j + 1] > str[j])
+                {
+                    int temp = str[j];
+                    str[j] = str[j + 1];
+                    str[j + 1] = temp;
+                }
+        return str;
+    }
+}
+int glasnie(char* str)
+{
+    int n = strlen(str);
+    int sum = 0;
+    char* s = new char[n + 1];
+    strcpy(s, str);
+    for (int i = 0; i < n; i++)
+        s[i] = tolower(s[i]);
+    for (int i = 0; i < n; i++)
+        if (s[i] == 'a' || s[i] == 'e' || s[i] == 'e' || s[i] == 'i' || s[i] == 'o' ||
+            s[i] == 'u' || s[i] == 'y')
+            sum++;
+    return sum;
+    delete[]s;
+}
+
+void different(char* str)  // 4 задание
+{
+    const int length = 81;
+    char str_copy[length];
+    strcpy(str_copy, str);
+    int k = 0;
+    int n = strlen(str_copy);
+    if (strlen(str_copy) != 0)
+    {
+        bool f;
+
+        for (int i = 0; i < n; i++)
+        {
+            f = true;
+            for (int j = 0; j < n; j++)
+                if (str_copy[i] == str_copy[j] && i != j)
+                    f = false;
+            if (f)
+                k++;
+        }
+        cout << "Количество разных символов: " << k << endl;
+        cout << endl;
+    }
+    else cout << "ERROR";
+}
+
+void repeats(char* str) // 5 задание
+{
+    int count, countmax = 0, imax = 0;
+    char temp[1];
+    for (int i = 0; i < strlen(str); i++)
+    {
+        count = 0;
+        temp[0] = str[i];
+        for (int j = 0; j < strlen(str); j++)
+        {
+            if (temp[0] == str[j]) count++;
+        }
+        if (count > countmax)
+        {
+            imax = i;
+            countmax = count;
+        }
+    }
+    cout << "Элемент встречающийся максимальное количество раз:" << str[imax] << endl;
+    cout << endl;
+}
+int digit(char* str)
+{
+    int count = 0;
+    for (int i = 0; i < strlen(str); i++)
+    {
+        if (isdigit(str[i])) count++;
+    }
+    return count;
+}
+void forWords(char* str) // 6 задание
+{
+    const int length = 81;
+    char* arr[length];
+    char* temp;
+    char* p = strtok(str, "!@#$%^&*()_+{}[],./-+=<>~");
+    int i = 1, size;
+    arr[0] = p;
+    cout << "Вывод слов столбиком:\n";
+    while (p != NULL)
+    {
+        cout << p << endl;
+        p = strtok(NULL, "!@#$%^&*()_+{}[],./-+=<>~");
+        arr[i] = p;
+        i++;
+    }
+    size = i - 2;
+    cout << "Вывод по алфавиту:\n";
+    for (int i = 0; i <= size; i++)
+    {
+        for (int j = i; j <= size; j++)
+        {
+            if (strcmp(arr[i], arr[j]) > 0)
+            {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    for (int i = 0; i <= size; i++)
+    {
+        cout << arr[i] << endl;
+    }
+    cout << "Вывод по длине:\n";
+    for (int i = 0; i <= size; i++)
+    {
+        for (int j = i; j <= size; j++)
+        {
+            if (strlen(arr[i]) > strlen(arr[j]))
+            {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    for (int i = 0; i <= size; i++)
+    {
+        cout << arr[i] << endl;
+    }
+    cout << "Вывод по количеству гласных:\n";
+    for (int i = 0; i <= size; i++)
+    {
+        for (int j = i; j <= size; j++)
+        {
+            if (glasnie(arr[i]) > glasnie(arr[j]))
+            {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    for (int i = 0; i <= size; i++)
+    {
+        cout << arr[i] << endl;
+    }
+    cout << "Вывод по количеству цифр:\n";
+    for (int i = 0; i <= size; i++)
+    {
+        for (int j = i; j <= size; j++)
+        {
+            if (digit(arr[i]) > digit(arr[j]))
+            {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    for (int i = 0; i <= size; i++)
+    {
+        cout << arr[i] << endl;
+    }
+}
+
+
+void numbs(char* str)
+{
+    const int length = 81;
+    char* arr[length];
+    char* temp;
+    char* p = strtok(str, "!@#$%^&*()_+{}[],./-+=<>~AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz");
+    int i = 1, size;
+    arr[0] = p;
+    cout << "Вывод цифр:\n";
+    while (p != NULL)
+    {
+        cout << p << " ";
+        p = strtok(NULL, "!@#$%^&*()_+{}[],./-+=<>~AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz");
+        arr[i] = p;
+        i++;
+    }
+    cout << endl;
+    size = i - 2;
+    cout << "Вывод слова–числа по возрастанию числовых величин, представленных в них:\n";
+    for (int i = 0; i <= size; i++)
+    {
+        for (int j = i; j <= size; j++)
+        {
+            if (atoi(arr[i]) > atoi(arr[j]))
+            {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+    for (int i = 0; i <= size; i++)
+    {
+        cout << arr[i] << endl;
+    }
+}
+int words(char* str, char* word)
+{
+    char* q = str;
+    int n = 0;
+    while ((q = strstr(q, word)) != NULL)
+    {
+        n++;
+        q++;
+    }
+    return(n);
+}
+void personalTask(char* str, char* slovo, char* zamena)
+{
+    char* p;
+    char* p1;
+    p = strstr(str, slovo);
+    while ((p = strstr(p, slovo)) != NULL)
+    {
+        for (int i = 0; i < strlen(slovo); i++)
+        {
+            p++;
+        }
+        strncpy(p, zamena, strlen(zamena));
+    }
+    cout << str << endl;
+}
+
+int main()
+{
+    setlocale(LC_ALL, ".1251");
+    SetConsoleCP(1251);
+    SetConsoleOutputCP(1251);
+    const int max = 80;
+
+    //Задание 1
+    char str1[max + 1];
+    cout << "Задание 1, количество повторений определенного символа (в данном случае символа *)" << endl;
+    cout << "Введите строку  (строка будет использованадля 1 и 2 задания)" << endl;
+    cin.getline(str1, max + 1);
+    cout << "Число повторений символа (*): ";
+    cout << poisk(str1, '*'); 
+    cout << endl << endl;
+
+    //Задание 2
+    cout << "Задание 2, замена в строке всех символов-цифр на заданный символ (*)" << endl << endl;
+    exchange(str1, '*');
+
+    //Задание 3
+    char str3[max + 1];
+    cout << "Задача 3, сортировка символов в строке по возрастанию и убыванию их кодов" << endl << endl; 
+    cout << "Введите строку (строка будет использована для 3-5 заданий)" << endl;
+    cin.getline(str3, max + 1);
+    cout << "1) По возрастанию: " << rost(str3) << endl;
+    cout << "2) По убыванию: " << vniz(str3);
+    cout << endl << endl;
+
+    //Задание 4
+    cout << "Задача 4, нахождение кол-ва различных символов" << endl;
+    different(str3);
+    cout << endl << endl;
+
+    // Задание 5
+    cout << "Задача 5. Найти  символ, который чаще всего встречается" << endl;
+    cout << "Введите строку" << endl;
+    repeats(str3);
+
+    // Задание 6
+    char str6[max + 1];
+    cout << "Задача 6, вывод слов" << endl << endl << "Введите строку" << endl;
+    cin.getline(str6, max + 1);
+    forWords(str6);
+
+    // Задание 7
+    char str7[max + 1];
+    cout << "Задача 7, вывод цифр" << endl << endl << "Введите строку" << endl;
+    cin.getline(str7, max + 1);
+    cout << endl << endl;
+    numbs(str7);
+
+    
+    // Задание 8
+    char str8[max + 1];
+    char word[max / 2];
+    char slovo[max];
+    cout << "Введите строку для 8-ого задания:";
+    cin.getline(str8, max + 1);
+    cout << endl << "Введите слово" << endl;
+    cin.getline(slovo, max);
+    cout << endl;
+    cout << "Количество повторений строки " << slovo << " = " << words(str8, slovo) << endl;
+    
+    
+
+    //Задание 9 (10 вариант)
+    char str9[max + 1];
+    cout << "Задание 9 (10 номер)" << endl << "Введите строку" << endl;
+    cin.getline(str9, max + 1);
+    char zamena[max];
+    char slovo9[max];
+   cout << "Введите слово, после которого вы хотите вставить слово:";
+    cin.getline(zamena, max);
+    cout << "Введите слово, которое хотите вставить:";
+    cin.getline(slovo9, max);
+    personalTask(str9, zamena, slovo9);
+    return 0;
+}
