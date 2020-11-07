@@ -275,38 +275,164 @@ void personalTask(char* str, char* word, char* zamena)
 }
 int main()
 {
-    setlocale(LC_ALL, ".1251");
-    cout << "Я люблю английский алфавит.\n";
-    const int nm = 80;
-    char string[nm + 1];
-    char copy[nm];
-    char copy2[nm];
-    cout << "Введите строку:";
-    cin.getline(string, nm + 1);
-    if (strlen(string) != 0)
-    {
-        strcpy(copy, string);
-        strcpy(copy2, string);
-        cout << "Число повторений символа \"1\"" << poisk(string, '1') << endl; //1
-        cout << "Заменить в строке все символы-цифры на заданный символ \"f\"" << endl;
-        exchange(string, 'f'); //2
-        cout << "Упорядочить символы в строке по возрастанию(убыванию) их кодов\n";
-        sort(string);
-        different(string);
-        repeats(string);
-        forWords(string);
-        numbs(copy);
-        char slovo[nm];
-        cout << "Введите подстроку для 8-ого задания:";
-        cin.getline(slovo, nm);
-        cout << endl;
-        cout << "Количество повторений строки " << slovo << " = " << words(copy2, slovo) << endl;
-        cout << "Введите строку(для замены) для 10-ого задания(заданное слово берется из ввода для 8-ого задания):";
-        char zamena[nm];
-        cin.getline(zamena, nm);
-        personalTask(copy2, slovo, zamena);
-    } //ggg
-    //ff
-    else cout << "У вас пустая строка. Попробуйте еще раз.\n";
-    return 0; //jjj
+  setlocale(LC_ALL, ".1251");
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
+	const int max = 80;
+
+	char str1[max + 1];
+	cout << "Решение задачи №1. Число повторений заданного символа" << endl  << "Введите строку" << endl;
+	cin.getline(str, max + 1);
+  cout << "Введите символ" << endl;
+        char simvol;
+        cin >> simvol;
+        cout << "Число повторений символа " << simvol << ": " << poisk(str1, simvol) << endl; //1
+
+	char str2[max + 1];
+	cout << "Решение задачи №2. Замена в строке всех цифр на заданный символ" << endl << endl << "Введите строку" << endl;
+	cin.getline(str2, max + 1);
+  cout << "Введите символ" << endl;
+       cin >> simvolchange;
+       cout << "Заменить в строке все символы-цифры на заданный символ " << simvolchange << ": " << endl;
+	cout << endl << exchange(str2, simvolchange) << endl;
+
+	char str3[max + 1];
+	cout << "Решение задачи №3.1. Символы по возрастанию" << endl << endl << "Введите строку" << endl;
+	cin.getline(str3, max + 1);
+	cout << endl << "Ответ: " << increase(str2) << endl << endl;
+
+	char str3[max + 1];
+	cout << "Решение задачи №3.2. Символы по убыванию" << endl;
+	cout << endl << "Ответ: " << decrease(str3) << endl << endl;
+
+	char str4[max + 1];
+	cout << "Решение задачи №4. Количество различных символов" << endl << endl << "Введите строку" << endl;
+	cin.getline(str4, max + 1);
+	cout << endl << "Ответ: " << diffsymbols(str4) << endl << endl;
+
+	char str5[max + 1];
+	cout << "Решение задачи №5. Часто встречающийся символ" << endl << endl << "Введите строку" << endl;
+	cin.getline(str5, max + 1);
+	cout << endl << "Ответ: " << different(str5)  << endl;
+
+	char str6[max + 1];
+	cout << "Решение задачи №6. Вывод слов" << endl << endl << "Введите строку" << endl;
+	cin.getline(str6, max + 1);
+	cout << endl << endl;
+
+	int n = strlen(str6);
+	char** words = new char* [n + 1];
+	int k = 0;
+	char* p = strtok(str6, " ,.-;^&*#,:()");
+	while (p != NULL)
+	{
+		words[k++] = p;
+		p = strtok(NULL, " ,.-;^&*#:()");
+	}
+	cout << "Слова" << endl << endl;
+	if (k > 0)
+	{
+		for (int i = 0; i < k; i++)
+			cout << words[i] << endl;
+
+		for (int i = 0; i < k; i++)
+		{
+			for (int j = 0; j < k - i - 1; j++)
+				if (strcmp(words[j], words[j + 1]) > 0)
+				{
+					p = words[j];
+					words[j] = words[j + 1];
+					words[j + 1] = p;
+				}
+		}
+		cout << endl << "Слова после сортировки по алфавиту" << endl << endl;
+		for (int i = 0; i < k; i++)
+			cout << words[i] << endl;
+
+		for (int i = 0; i < k; i++)
+		{
+			for (int j = 0; j < k - i - 1; j++)
+				if (strlen(words[j]) > strlen(words[j + 1]))
+				{
+					p = words[j];
+					words[j] = words[j + 1];
+					words[j + 1] = p;
+				}
+		}
+		cout << endl << "Слова после сортировки по длине" << endl << endl;
+		for (int i = 0; i < k; i++)
+			cout << words[i] << endl;
+	}
+	else cout << "В строке нет слов" << endl;
+	cout << endl;
+
+	char str7[max + 1];
+	cout << "Решение задачи №7. Вывод цифр" << endl << endl << "Введите строку" << endl;
+	cin.getline(str7, max + 1);
+	cout << endl << endl;
+
+	char** digits = new char* [n + 1];
+	int i = 0, l = 0;
+	int len = strlen(str7);
+	while (i < len)
+	{
+		while (!isdigit(str7[i]) && i < len) i++;
+		if (i < len)
+		{
+			digits[l++] = &str7[i];
+			while (isdigit(str7[i])) i++;
+			str7[i] = '\0';
+		}
+	}
+
+	if (l > 0)
+	{
+		cout << "Числа" << endl << endl;
+		for (int i = 0; i < l; i++)
+			cout << digits[i] << " ";
+
+		for (int i = 0; i < l; i++)
+		{
+			for (int j = 0; j < l - i - 1; j++)
+				if (strcmp(digits[j], digits[j + 1]) > 0)
+				{
+					char* s = digits[j];
+					digits[j] = digits[j + 1];
+					digits[j + 1] = s;
+				}
+		}
+		cout << endl << endl;
+		cout << "Числа после лексикографической сортировки" << endl << endl;
+		for (int i = 0; i < l; i++)
+			cout << digits[i] << " ";
+
+		int* mas = new int[l];
+		for (int i = 0; i < l; i++)
+			mas[i] = atoi(digits[i]);
+
+		for (int i = 0; i < l; i++)
+		{
+			for (int j = 0; j < l - i - 1; j++)
+				if (mas[j] > mas[j + 1])
+				{
+					int y = mas[j];
+					mas[j] = mas[j + 1];
+					mas[j + 1] = y;
+				}
+		}
+		cout << endl << endl;
+		cout << "Числа после сортировки по возрастанию" << endl << endl;
+		for (int i = 0; i < l; i++)
+			cout << mas[i] << " ";
+		cout << endl << endl;
+	}
+	else cout << "В строке нет чисел" << endl;
+
+	char str8[max + 1];
+	char word[max / 2];
+	cout << "Решение задачи №8. Количество слов" << endl << endl << "Введите строку" << endl;
+	cin.getline(str8, max + 1);
+	cout << endl << "Введите слово" << endl;
+	cin.getline(word, max / 2);
+	cout << "Ответ: " << wordsamount(str8, word) << endl << endl;
 }
