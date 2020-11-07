@@ -305,7 +305,8 @@ int main()
         char zamena[nm];
         cin.getline(zamena, nm);
         personalTask(copy2, slovo, zamena);
-    }
+    } //ggg
+    //ff
     else cout << "У вас пустая строка. Попробуйте еще раз.\n";
-    return 0;
+    return 0; //jjj
 }
